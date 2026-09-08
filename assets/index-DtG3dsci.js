@@ -3244,6 +3244,24 @@ This typically indicates that your device does not have a healthy Internet conne
           font: inherit;
         }
 
+        /* 모바일 브라우저의 다크모드/자동 폼 색상 때문에
+           입력값이 흰 배경에서 보이지 않는 문제 방지 */
+        input,
+        select,
+        textarea {
+          color: #222;
+          -webkit-text-fill-color: #222;
+          opacity: 1;
+          color-scheme: light;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+          color: #aaa;
+          -webkit-text-fill-color: #aaa;
+          opacity: 1;
+        }
+
         button {
           cursor: pointer;
         }
@@ -3358,6 +3376,8 @@ This typically indicates that your device does not have a healthy Internet conne
           border: 1px solid #ddd;
           border-radius: 7px;
           background: white;
+          color: #222;
+          -webkit-text-fill-color: #222;
           padding: 8px 9px;
           outline: none;
           min-width: 0;
@@ -3491,6 +3511,9 @@ This typically indicates that your device does not have a healthy Internet conne
           font-size: 12px;
           border: 1px solid transparent;
           background: transparent;
+          color: #222;
+          -webkit-text-fill-color: #222;
+          opacity: 1;
           padding: 7px 5px;
           border-radius: 5px;
         }
@@ -3542,6 +3565,7 @@ This typically indicates that your device does not have a healthy Internet conne
 
         .auto-seat-input {
           color: #777;
+          -webkit-text-fill-color: #777;
         }
 
         .star-rating {
