@@ -1,6 +1,32 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { initializeApp } from "firebase/app";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 const STORAGE_KEY = "musical-attendance-manager-v1";
+
+// Firebase 콘솔에서 발급받은 설정값으로 교체하세요.
+const firebaseConfig = {
+  apiKey: "AIzaSyDOC2JIQWqoBRSL5w7r8UPR7rHi9P85aSc",
+  authDomain: "musical-archive.firebaseapp.com",
+  databaseURL: "https://musical-archive-default-rtdb.firebaseio.com",
+  projectId: "musical-archive",
+  storageBucket: "musical-archive.firebasestorage.app",
+  messagingSenderId: "820379469993",
+  appId: "1:820379469993:web:c60b7f933f13f3ab4c41b8",
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
+
 
 const CHARACTER_FIELDS = [
   { key: "character1", label: "김우진" },
@@ -49,6 +75,7 @@ function createEmptyRow() {
     watched: false,
     seat: "Z0",
     price: 0,
+    realPrice: 0,
     discount: 0,
     booking: "",
     rating: "",
@@ -68,6 +95,7 @@ const SAMPLE_ROWS = [
     seat: "B12",
     price: 70000,
     discount: 10000,
+    realPrice: 60000,
     booking: "인터파크",
     rating: "5",
     memo: "첫 관극",
@@ -83,6 +111,7 @@ const SAMPLE_ROWS = [
     seat: "C10",
     price: 70000,
     discount: 0,
+    realPrice: 70000,
     booking: "멜론티켓",
     rating: "4.5",
     memo: "",
@@ -152,6 +181,8 @@ function App() {
   const [filter, setFilter] = useState("all");
   const [selectedSeat, setSelectedSeat] = useState("");
   const [showOnlyWatchedSeats, setShowOnlyWatchedSeats] = useState(false);
+  const [user, setUser] = useState(null);
+  const [cloudReady, setCloudReady] = useState(false);
 
   // -----------------------------
   // localStorage 자동 저장
@@ -166,6 +197,61 @@ function App() {
       })
     );
   }, [info, rows]);
+
+  // Google 로그인 상태 확인 후 해당 계정의 저장 데이터를 불러옵니다.
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      setCloudReady(false);
+
+      if (!currentUser) {
+        setCloudReady(true);
+        return;
+      }
+
+      try {
+        const snapshot = await getDoc(doc(db, "users", currentUser.uid));
+
+        if (snapshot.exists()) {
+          const cloudData = snapshot.data();
+          if (cloudData.info) setInfo(cloudData.info);
+          if (Array.isArray(cloudData.rows)) setRows(cloudData.rows);
+        } else {
+          // 처음 로그인한 계정이면 현재 브라우저의 기록을 계정 저장소로 이전합니다.
+          await setDoc(doc(db, "users", currentUser.uid), {
+            info,
+            rows,
+            updatedAt: new Date().toISOString(),
+          });
+        }
+      } catch (error) {
+        console.error("클라우드 데이터 불러오기 실패:", error);
+        window.alert("구글 계정의 저장 데이터를 불러오지 못했습니다. Firebase 설정을 확인해주세요.");
+      } finally {
+        setCloudReady(true);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  async function loginWithGoogle() {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Google 로그인 실패:", error);
+      window.alert("Google 로그인에 실패했습니다. 팝업 차단 및 Firebase 설정을 확인해주세요.");
+    }
+  }
+
+  async function logoutGoogle() {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+      window.alert("로그아웃에 실패했습니다.");
+    }
+  }
 
   // -----------------------------
   // 배우 통계
@@ -302,17 +388,37 @@ function App() {
 
   function updateRow(id, field, value) {
     setRows((prev) =>
-      prev.map((row) =>
-        row.id === id
-          ? {
-              ...row,
-              [field]:
-                field === "price" || field === "discount"
-                  ? Number(value)
-                  : value,
-            }
-          : row
-      )
+      prev.map((row) => {
+        if (row.id !== id) return row;
+
+        const nextValue =
+          field === "price" || field === "realPrice"
+            ? Number(value || 0)
+            : value;
+
+        if (field === "price") {
+          const realPrice = Number(row.realPrice ?? Math.max(Number(row.price || 0) - Number(row.discount || 0), 0));
+          return {
+            ...row,
+            price: nextValue,
+            discount: Math.max(nextValue - realPrice, 0),
+          };
+        }
+
+        if (field === "realPrice") {
+          const price = Number(row.price || 0);
+          return {
+            ...row,
+            realPrice: nextValue,
+            discount: Math.max(price - nextValue, 0),
+          };
+        }
+
+        return {
+          ...row,
+          [field]: nextValue,
+        };
+      })
     );
   }
 
@@ -369,7 +475,7 @@ function App() {
   // 데이터 저장
   // -----------------------------
 
-  function saveData() {
+  async function saveData() {
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
@@ -377,7 +483,24 @@ function App() {
         rows,
       })
     );
-    window.alert("공연 정보와 관극 기록을 저장했습니다.");
+
+    if (user && cloudReady) {
+      try {
+        await setDoc(doc(db, "users", user.uid), {
+          info,
+          rows,
+          updatedAt: new Date().toISOString(),
+        });
+        window.alert("공연 정보와 관극 기록을 구글 계정에 저장했습니다.");
+        return;
+      } catch (error) {
+        console.error("클라우드 저장 실패:", error);
+        window.alert("브라우저에는 저장했지만 구글 계정 저장에 실패했습니다.");
+        return;
+      }
+    }
+
+    window.alert("공연 정보와 관극 기록을 이 브라우저에 저장했습니다. Google 로그인 후에는 계정에 저장할 수 있습니다.");
   }
 
   // -----------------------------
@@ -527,8 +650,18 @@ function App() {
 
         .actions {
           display: flex;
+          align-items: center;
           gap: 8px;
           flex-wrap: wrap;
+        }
+
+        .login-user {
+          max-width: 220px;
+          color: #666;
+          font-size: 12px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .button {
@@ -823,6 +956,12 @@ function App() {
         .watched-checkbox {
           width: 17px;
           height: 17px;
+        }
+
+        .real-price-input {
+          width: 50px;
+          min-width: 50px;
+          text-align: right;
         }
 
         .real-price {
@@ -1255,6 +1394,25 @@ function App() {
             </div>
 
             <div className="actions">
+              {user ? (
+                <>
+                  <span className="login-user">{user.displayName || user.email}</span>
+                  <button
+                    className="button"
+                    onClick={logoutGoogle}
+                  >
+                    로그아웃
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="button primary"
+                  onClick={loginWithGoogle}
+                >
+                  Google 로그인
+                </button>
+              )}
+
               <button
                 className="button"
                 onClick={saveData}
@@ -1738,10 +1896,12 @@ function App() {
 
                       {filteredRows.map((row) => {
 
-                        const realPrice = Math.max(
-                          Number(row.price || 0) -
-                            Number(row.discount || 0),
-                          0
+                        const realPrice = Number(
+                          row.realPrice ??
+                            Math.max(
+                              Number(row.price || 0) - Number(row.discount || 0),
+                              0
+                            )
                         );
 
                         return (
@@ -1843,25 +2003,25 @@ function App() {
                             </td>
 
                             <td>
+                              <div className="real-price">
+                                {formatNumber(row.discount || 0)}
+                              </div>
+                            </td>
+
+                            <td>
                               <input
                                 type="text"
                                 inputMode="numeric"
-                                className="cell-input price-input"
-                                value={row.discount === "" ? "" : formatNumber(row.discount)}
+                                className="cell-input real-price-input"
+                                value={realPrice === 0 && row.realPrice === undefined ? "" : formatNumber(realPrice)}
                                 onChange={(e) =>
                                   updateRow(
                                     row.id,
-                                    "discount",
+                                    "realPrice",
                                     e.target.value.replace(/,/g, "")
                                   )
                                 }
                               />
-                            </td>
-
-                            <td>
-                              <div className="real-price">
-                                {formatNumber(realPrice)}
-                              </div>
                             </td>
 
                             <td>
