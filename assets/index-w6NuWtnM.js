@@ -3221,6 +3221,12 @@ This typically indicates that your device does not have a healthy Internet conne
  * limitations under the License.
  */function BF(n){n=Ua(n,pt);const e=Ua(n.firestore,Kp),t=qv(e);return tF(t,n._key).then(r=>hF(e,n,r))}function zE(n,e,t){n=Ua(n,pt);const r=Ua(n.firestore,Kp),s=iF(n.converter,e),i=ZN(r);return cF(r,[ex(i,"setDoc",n._key,s,n.converter!==null,t).toMutation(n._key,gr.none())])}function cF(n,e){const t=qv(n);return nF(t,e)}function hF(n,e,t){const r=t.docs.get(e._key),s=new lF(n);return new Qs(n,s,e._key,r,new na(t.hasPendingWrites,t.fromCache),e.converter)}const JE="@firebase/firestore",KE="4.17.1";(function(e,t=!0){lP(fo),to(new ni("firestore",(r,{instanceIdentifier:s,options:i})=>{const o=r.getProvider("app").getImmediate(),a=new Kp(new IN(r.getProvider("auth-internal")),new SN(o,r.getProvider("app-check-internal")),mP(o,s),o);return i={useFetchStreams:t,...i},a._setSettings(i),a},"PUBLIC").setMultipleInstances(!0)),as(JE,KE,e),as(JE,KE,"esm2020")})();const ra="musical-attendance-manager-v1",fF={apiKey:"AIzaSyDOC2JIQWqoBRSL5w7r8UPR7rHi9P85aSc",authDomain:"musical-archive.firebaseapp.com",databaseURL:"https://musical-archive-default-rtdb.firebaseio.com",projectId:"musical-archive",storageBucket:"musical-archive.firebasestorage.app",messagingSenderId:"820379469993",appId:"1:820379469993:web:c60b7f933f13f3ab4c41b8"},$v=mD(fF),Ih=OR($v),qE=oF($v),dF=new lr,$E=[{key:"character1",label:"김우진"},{key:"character2",label:"윤심덕"},{key:"character3",label:"사내"}],Qv={A:{left:[1,2,3,4],center:[5,6,7,8,9,10,11,12,13,14,15,16],right:[17,18,19,20,21,22]},B:{left:[1,2,3,4],center:[5,6,7,8,9,10,11,12,13,14,15,16],right:[17,18,19,20,21,22,23]},C:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},D:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},E:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},F:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},G:{left:[1,2,3,4,5],center:[6,7,8,9,10,11,12,13,14,15,16,17],right:[18,19,20,21,22,23,24,25]},H:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},I:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},J:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},K:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},L:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},M:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},N:{left:[1,2,3,4,5],center:[6,7,8,9,10,11,12,13,14,15,16,17],right:[18,19,20,21,22,23,24,25]},O:{left:[1,2,3,4,5],center:[6,7,8,9,10,11,12,13,14,15,16,17],right:[18,19,20,21,22,23,24,25]},P:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},Q:{left:[1,2,3,4,5,6],center:[7,8,9,10,11,12,13,14,15,16,17,18],right:[19,20,21,22,23,24,25,26]},R:{left:[1,2,3,4,5,6,7],center:[8,9,10,11,12,13,14,15,16,17,18,19],right:[20,21,22,23,24,25,26,27]},S:{left:[],center:[1,2,3,4,5,6,7,8],right:[9,10,11,12,13,14,15,16]}},pF=Object.keys(Qv),qi={title:"작품명을 입력하세요",theater:"공연장을 입력하세요",startDate:"",endDate:"",memo:""};function CF(){return{id:Date.now()+Math.random(),date:"",time:"20:00",character1:"",character2:"",character3:"원태민",watched:!1,seat:"Z0",price:0,realPrice:0,discount:0,booking:"",rating:"",memo:""}}const qf=[{id:1,date:"2026-09-05",time:"14:00",character1:"홍길동",character2:"김영희",character3:"이철수",watched:!0,seat:"B12",price:7e4,discount:1e4,realPrice:6e4,booking:"인터파크",rating:"5",memo:"첫 관극"},{id:2,date:"2026-09-06",time:"18:00",character1:"홍길동",character2:"박민수",character3:"이철수",watched:!0,seat:"C10",price:7e4,discount:0,realPrice:7e4,booking:"멜론티켓",rating:"4.5",memo:""},{id:3,date:"2026-09-12",time:"14:00",character1:"김철수",character2:"김영희",character3:"이철수",watched:!1,seat:"",price:7e4,discount:0,booking:"",rating:"",memo:"예매했지만 미관극"}];function QE(){try{const n=localStorage.getItem(ra);if(!n)return{info:qi,rows:qf};const e=JSON.parse(n);return{info:{...qi,...e.info||{}},rows:Array.isArray(e.rows)?e.rows:[]}}catch{return{info:qi,rows:qf}}}function Vr(n){return Number(n||0).toLocaleString("ko-KR")}function gF(){const n=rt.useMemo(()=>QE(),[]),[e,t]=rt.useState(n.info),[r,s]=rt.useState(n.rows),[i,o]=rt.useState(""),[a,u]=rt.useState("all"),[B,h]=rt.useState(""),[f,p]=rt.useState(!1),[m,v]=rt.useState(null),[O,j]=rt.useState(!1);rt.useEffect(()=>{O&&localStorage.setItem(ra,JSON.stringify({info:e,rows:r}))},[e,r,O]);async function w(G){if(G){j(!1);try{const Z=RE(qE,"users",G.uid),ie=await BF(Z);if(ie.exists()){const le=ie.data(),pe={...qi,...le.info||{}},We=Array.isArray(le.rows)?le.rows:[];t(pe),s(We),localStorage.setItem(ra,JSON.stringify({info:pe,rows:We}))}else{const le=QE(),pe={...qi,...le.info||{}},We=Array.isArray(le.rows)?le.rows:[];await zE(Z,{info:pe,rows:We,updatedAt:new Date().toISOString()}),t(pe),s(We)}}catch(Z){console.error("클라우드 데이터 불러오기 실패:",Z),window.alert("구글 계정의 저장 데이터를 불러오지 못했습니다. Firebase 설정을 확인해주세요.")}finally{j(!0)}}}rt.useEffect(()=>yS(Ih,async Z=>{if(v(Z),!Z){j(!0);return}await w(Z)}),[]);async function D(){try{const G=await US(Ih,dF);v(G.user),await w(G.user)}catch(G){console.error("Google 로그인 실패:",G),window.alert("Google 로그인에 실패했습니다. 팝업 차단 및 Firebase 설정을 확인해주세요.")}}async function N(){try{await DS(Ih)}catch(G){console.error("로그아웃 실패:",G),window.alert("로그아웃에 실패했습니다.")}}const H=rt.useMemo(()=>$E.map(({key:G,label:Z})=>{const ie={};return r.forEach(le=>{const pe=String(le[G]||"").trim();pe&&(ie[pe]||(ie[pe]={name:pe,appearances:0,watched:0}),ie[pe].appearances+=1,le.watched&&(ie[pe].watched+=1))}),{key:G,label:Z,actors:Object.values(ie).sort((le,pe)=>pe.watched!==le.watched?pe.watched-le.watched:le.name.localeCompare(pe.name,"ko"))}}),[r]),Y=H.reduce((G,Z)=>G+Z.actors.length,0),W=rt.useMemo(()=>r.filter(G=>G.watched),[r]),y=r.length,g=W.length,I=rt.useMemo(()=>W.reduce((G,Z)=>{const ie=Number(Z.price||0),le=Number(Z.discount||0);return G+Math.max(ie-le,0)},0),[W]),A=g>0?Math.round(I/g):0,S=y>0?Math.round(g/y*100):0,k=rt.useMemo(()=>{const G={};return W.forEach(Z=>{if(!Z.seat)return;const ie=Z.seat.toUpperCase().trim();G[ie]=(G[ie]||0)+1}),G},[W]);Math.max(1,...Object.values(k));function T(G){return G?Math.min(5,G):0}const Ze=rt.useMemo(()=>{const G=i.trim().toLowerCase();return r.filter(Z=>a==="all"||a==="watched"&&Z.watched||a==="unwatched"&&!Z.watched?G?[Z.date,Z.time,Z.character1,Z.character2,Z.character3,Z.seat,Z.booking,Z.memo].join(" ").toLowerCase().includes(G):!0:!1)},[r,i,a]);function tt(G,Z,ie){s(le=>le.map(pe=>{if(pe.id!==G)return pe;const We=Z==="price"||Z==="realPrice"?Number(ie||0):ie;if(Z==="price"){const gn=Number(pe.realPrice??Math.max(Number(pe.price||0)-Number(pe.discount||0),0));return{...pe,price:We,discount:Math.max(We-gn,0)}}if(Z==="realPrice"){const gn=Number(pe.price||0);return{...pe,realPrice:We,discount:Math.max(gn-We,0)}}return{...pe,[Z]:We}}))}function sr(){s(G=>[...G,CF()])}function Ts(G){window.confirm("이 관극 기록을 삭제할까요?")&&s(ie=>ie.filter(le=>le.id!==G))}function ne(G){h(G)}function fe(){window.confirm("모든 관극 기록을 삭제하고 처음 상태로 되돌릴까요?")&&(localStorage.removeItem(ra),t(qi),s([]),h(""))}async function me(){if(localStorage.setItem(ra,JSON.stringify({info:e,rows:r})),m&&O)try{await zE(RE(qE,"users",m.uid),{info:e,rows:r,updatedAt:new Date().toISOString()}),window.alert("공연 정보와 관극 기록을 구글 계정에 저장했습니다.");return}catch(G){console.error("클라우드 저장 실패:",G),window.alert("브라우저에는 저장했지만 구글 계정 저장에 실패했습니다.");return}window.alert("공연 정보와 관극 기록을 이 브라우저에 저장했습니다. Google 로그인 후에는 계정에 저장할 수 있습니다.")}function ke(){window.confirm("현재 기록을 샘플 데이터로 교체할까요?")&&(t({title:"뮤지컬 샘플",theater:"예술의전당",startDate:"2026-09-01",endDate:"2026-10-31",memo:"공연 정보 메모를 입력할 수 있습니다."}),s(qf))}async function Je(){const G=["날짜","시간","김우진","윤심덕","사내","관극여부","좌석","정가","할인","실결제","예매처","평점","비고"],Z=r.map(le=>[le.date,le.time,le.character1,le.character2,le.character3,le.watched?"관극":"미관극",le.seat,le.price,le.discount,Math.max(Number(le.price||0)-Number(le.discount||0),0),le.booking,le.rating,le.memo]),ie=[G,...Z].map(le=>le.map(pe=>`"${String(pe??"").replaceAll('"','""')}"`).join(",")).join(`
 `);try{await navigator.clipboard.writeText(ie),window.alert("전체 관극 기록이 CSV 형식으로 클립보드에 복사되었습니다.")}catch{window.alert("클립보드 복사에 실패했습니다.")}}return x.jsxs(x.Fragment,{children:[x.jsx("style",{children:`
+        :root,
+        html {
+          color-scheme: light !important;
+          background: #f5f5f7;
+        }
+
         * {
           box-sizing: border-box;
         }
@@ -3257,9 +3263,69 @@ This typically indicates that your device does not have a healthy Internet conne
 
         input::placeholder,
         textarea::placeholder {
-          color: #aaa;
-          -webkit-text-fill-color: #aaa;
+          color: #aaa !important;
+          -webkit-text-fill-color: #aaa !important;
           opacity: 1;
+        }
+
+        /* iOS/Safari 다크모드에서 날짜·시간 입력 내부 텍스트가
+           시스템 색상으로 덮어써지는 문제까지 강제로 방지 */
+        input[type="date"],
+        input[type="time"],
+        input[type="text"],
+        input[type="number"],
+        input[type="search"],
+        select,
+        textarea {
+          background-color: #fff !important;
+          color: #222 !important;
+          -webkit-text-fill-color: #222 !important;
+          caret-color: #222 !important;
+        }
+
+        input[type="date"]::-webkit-datetime-edit,
+        input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+        input[type="date"]::-webkit-datetime-edit-text,
+        input[type="date"]::-webkit-datetime-edit-month-field,
+        input[type="date"]::-webkit-datetime-edit-day-field,
+        input[type="date"]::-webkit-datetime-edit-year-field,
+        input[type="time"]::-webkit-datetime-edit,
+        input[type="time"]::-webkit-datetime-edit-fields-wrapper,
+        input[type="time"]::-webkit-datetime-edit-text,
+        input[type="time"]::-webkit-datetime-edit-hour-field,
+        input[type="time"]::-webkit-datetime-edit-minute-field {
+          color: #222 !important;
+          -webkit-text-fill-color: #222 !important;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+          opacity: 0.75;
+          filter: none !important;
+        }
+
+        select option {
+          background: #fff !important;
+          color: #222 !important;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          :root,
+          html,
+          body {
+            color-scheme: light !important;
+            background: #f5f5f7 !important;
+            color: #222 !important;
+          }
+
+          input,
+          select,
+          textarea {
+            background-color: #fff !important;
+            color: #222 !important;
+            -webkit-text-fill-color: #222 !important;
+            caret-color: #222 !important;
+          }
         }
 
         button {
